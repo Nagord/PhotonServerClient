@@ -84,6 +84,8 @@ namespace PhotonServerClient
         public static SaveValue<bool> AlwaysConnectToPrivate = new SaveValue<bool>("AlwaysConnectToPrivate", false);
 
         private static bool PrivateConnection = false;
+        private static bool UdpPortConfigurationPublic = false;
+        private static bool FirstConnection = true;
 
         public static bool IsPrivateConnection
         {
@@ -93,13 +95,19 @@ namespace PhotonServerClient
             }
             set
             {
+                if (FirstConnection)
+                {
+                    UdpPortConfigurationPublic = PhotonNetwork.UseAlternativeUdpPorts;
+                }
                 if (value)
                 {
+                    PhotonNetwork.UseAlternativeUdpPorts = false;
                     PrivateConnection = true;
                     PhotonNetwork.PhotonServerSettings.UseMyServer(IP, Port, AppID);
                 }
                 else
                 {
+                    PhotonNetwork.UseAlternativeUdpPorts = UdpPortConfigurationPublic;
                     PrivateConnection = false;
                     PhotonNetwork.PhotonServerSettings.UseCloud(AppID);
                 }

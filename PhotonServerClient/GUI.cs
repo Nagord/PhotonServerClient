@@ -1,5 +1,7 @@
 ﻿using PulsarModLoader.CustomGUI;
+using System;
 using System.Net;
+using System.Net.Sockets;
 using static UnityEngine.GUILayout;
 
 namespace PhotonServerClient
@@ -87,7 +89,7 @@ namespace PhotonServerClient
 
 
             //IP parsing + warning
-            if (!IPAddress.TryParse(IPString, out IPAddress addressObject))
+            if (!IPAddress.TryParse(IPString, out IPAddress addressObject) && !HostResolverStateMachine.ResolveHost(IPString, out addressObject))
             {
                 //Photon Connections cannot take hostnames
                 Label("IP failed to parse");
@@ -131,5 +133,8 @@ namespace PhotonServerClient
             IPString = ClientInterface.IP.ToString();
             PortString = ClientInterface.Port.ToString();
         }
+
+
+       
     }
 }
