@@ -98,6 +98,7 @@ namespace PhotonServerClient
                 if (FirstConnection)
                 {
                     UdpPortConfigurationPublic = PhotonNetwork.UseAlternativeUdpPorts;
+                    FirstConnection = false;
                 }
                 if (value)
                 {
