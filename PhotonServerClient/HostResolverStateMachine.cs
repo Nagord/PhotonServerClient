@@ -15,7 +15,11 @@ namespace PhotonServerClient
         {
             if (workingTask == null || workingTask.IsCompleted)
             {
-                workingTask = InternalResolveHost(hostAddress);
+                if (LastString != hostAddress)
+                {
+                    LastString = hostAddress;
+                    workingTask = InternalResolveHost(hostAddress);
+                }
             }
             lock (_sync)
             {
@@ -23,6 +27,7 @@ namespace PhotonServerClient
                 return _LastResult;
             }
         }
+        private static string LastString = string.Empty;
         private static readonly object _sync = new object();
         private static bool _LastResult;
         private static bool LastResult
